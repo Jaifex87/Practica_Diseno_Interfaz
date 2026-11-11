@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de monitoreo de servidores</title>
+  <link rel="stylesheet" href="Estilo_3.css">
+</head>
+<body>
+
+  <!-- ZONA 1: Navegación (Sidebar + Header Superior) -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="brand-logo" aria-hidden="true">⚡</span>
+      <h2>CloudAdmin</h2>
+    </div>
+    <nav class="sidebar-nav">
+      <!-- ¿Dónde estoy? (Elemento activo) & ¿A dónde puedo ir? -->
+      <a href="#dashboard" class="nav-item active" aria-current="page">
+        <span class="icon" aria-hidden="true">📊</span> Panel
+      </a>
+      <a href="#servidores" class="nav-item">
+        <span class="icon" aria-hidden="true">🖥️</span> Servidores
+      </a>
+      <a href="#metricas" class="nav-item">
+        <span class="icon" aria-hidden="true">📈</span> Métricas
+      </a>
+      <a href="#configuracion" class="nav-item">
+        <span class="icon" aria-hidden="true">⚙️</span> Configuración
+      </a>
+    </nav>
+  </aside>
+
+  <div class="app-layout">
+    <header class="top-header">
+      <button class="menu-toggle" id="menuToggle" type="button" aria-label="Abrir menú" aria-controls="sidebar" aria-expanded="false">☰</button>
+      
+      <!-- Breadcrumbs: Responde ¿De dónde vengo? y ¿Dónde estoy? -->
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="#dashboard">Inicio</a></li>
+          <li><a href="#servidores">Infraestructura</a></li>
+          <li aria-current="page">Monitoreo en tiempo real</li>
+        </ol>
+      </nav>
+
+      <div class="header-actions">
+        <!-- Toggle Manual de Modo Oscuro -->
+        <button class="btn btn-icon" id="themeToggle" type="button" title="Cambiar tema" aria-label="Cambiar tema" aria-pressed="false">🌓</button>
+        <div class="user-profile">
+          <span class="avatar" aria-hidden="true">👨‍💻</span>
+          <span class="username">Ing. DevOps</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- ZONA 2: Contenido Dinámico (Bento Grid + Tablas de Servidores) -->
+    <main class="main-content" id="dashboard">
+      
+      <!-- Bento Grid (Maquetación Bidimensional) -->
+      <section class="bento-grid" id="metricas" aria-label="Métricas de infraestructura">
+        <article class="card bento-card-large">
+          <div class="card-header">
+            <h3>Consumo general de CPU y memoria RAM</h3>
+            <span class="badge badge-success">En línea</span>
+          </div>
+          <div class="chart-placeholder">
+            <!-- Gráfica simulada -->
+            <div class="bar-chart">
+              <div class="bar" style="--height: 60%"><span>60%</span></div>
+              <div class="bar" style="--height: 85%"><span>85%</span></div>
+              <div class="bar" style="--height: 45%"><span>45%</span></div>
+              <div class="bar" style="--height: 92%"><span>92%</span></div>
+              <div class="bar" style="--height: 70%"><span>70%</span></div>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h3>Salud del clúster</h3>
+          </div>
+          <div class="metric-value">99.98%</div>
+          <p class="metric-label">Disponibilidad en los últimos 30 días</p>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <h3>Tráfico de red</h3>
+          </div>
+          <div class="metric-value">1.2 GB/s</div>
+          <p class="metric-label">Ancho de banda entrante/saliente</p>
+        </article>
+
+        <article class="card bento-card-wide">
+          <div class="card-header">
+            <h3>Instancias activas</h3>
+          </div>
+          <div class="metric-value">24 / 26</div>
+          <p class="metric-label">2 instancias en mantenimiento programado</p>
+        </article>
+      </section>
+
+      <!-- Tabla de Registros de Servidores -->
+      <section class="table-container card" id="servidores">
+        <div class="table-header">
+          <h3>Registros de servidores e instancias en la nube</h3>
+          <div class="table-filters">
+            <label class="visually-hidden" for="tableSearch">Filtrar servidores por nombre o dirección IP</label>
+            <input type="search" class="form-control" placeholder="Filtrar por IP o nombre..." id="tableSearch" aria-controls="serverTable">
+          </div>
+        </div>
+
+        <p class="table-result-count" id="tableResultCount" aria-live="polite"></p>
+        <div class="table-wrapper">
+          <table id="serverTable">
+            <thead>
+              <tr>
+                <th>Servidor</th>
+                <th>Dirección IP</th>
+                <th>Región</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>srv-prod-us-01</strong></td>
+                <td>192.168.1.10</td>
+                <td>us-east-1</td>
+                <td><span class="badge badge-success">Activo</span></td>
+                <td>
+                  <div class="button-group">
+                    <button class="btn btn-secondary btn-sm" onclick="openDrawer('srv-prod-us-01')">Configurar</button>
+                    <button class="btn btn-danger btn-sm" onclick="openModal('srv-prod-us-01')">Reiniciar</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>srv-db-cluster-02</strong></td>
+                <td>10.0.4.85</td>
+                <td>sa-east-1</td>
+                <td><span class="badge badge-warning">Carga Alta</span></td>
+                <td>
+                  <div class="button-group">
+                    <button class="btn btn-secondary btn-sm" onclick="openDrawer('srv-db-cluster-02')">Configurar</button>
+                    <button class="btn btn-danger btn-sm" onclick="openModal('srv-db-cluster-02')">Reiniciar</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>srv-maint-test-03</strong></td>
+                <td>172.16.0.44</td>
+                <td>eu-central-1</td>
+                <td><span class="badge badge-disabled">Deshabilitado</span></td>
+                <td>
+                  <div class="button-group">
+                    <!-- Ejemplo de estado Disabled y Loading -->
+                    <button class="btn btn-secondary btn-sm" disabled>Bloqueado</button>
+                    <button class="btn btn-primary btn-sm loading">Procesando</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ZONA 3: Componentes Flotantes (Drawer + Ventana Modal) -->
+
+  <!-- Backdrop / Overlay para los componentes flotantes -->
+  <div class="backdrop" id="backdrop"></div>
+
+  <!-- Drawer (Panel lateral desplegable de parámetros - Fase 4 Form Controls) -->
+  <aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="drawerTitle">
+    <div class="drawer-header">
+      <h2 id="drawerTitle">Configuración de Parámetros</h2>
+      <button class="btn-close" type="button" aria-label="Cerrar configuración" onclick="closeDrawer()">&times;</button>
+    </div>
+    
+    <form class="drawer-body control-form" id="drawerForm" novalidate onsubmit="handleFormSubmit(event)">
+      <p class="form-description">Ajuste los parámetros del servidor <strong id="drawerServerName">--</strong></p>
+
+      <!-- Input de Texto -->
+      <div class="form-group">
+        <label for="serverAlias">Alias del Servidor</label>
+        <input type="text" id="serverAlias" class="form-control" placeholder="Ej. Servidor web principal" required>
+      </div>
+
+      <!-- Textarea / Área de texto -->
+      <div class="form-group">
+        <label for="serverNotes">Notas de Mantenimiento</label>
+        <textarea id="serverNotes" class="form-control" rows="3" placeholder="Detalle los motivos del cambio..."></textarea>
+      </div>
+
+      <!-- Datepicker / Selector con calendario -->
+      <div class="form-group">
+        <label for="maintDate">Próxima Fecha de Revisión</label>
+        <input type="date" id="maintDate" class="form-control" required>
+      </div>
+
+      <!-- Dropdown Desplegable -->
+      <div class="form-group">
+        <label for="regionSelect">Región de nube asignada</label>
+        <select id="regionSelect" class="form-control">
+          <option value="us-east-1">Este de EE. UU. (Virginia del Norte)</option>
+          <option value="sa-east-1">Este de Sudamérica (São Paulo)</option>
+          <option value="eu-central-1">Centro de Europa (Fráncfort)</option>
+        </select>
+      </div>
+
+      <!-- Switch / Toggle Binario -->
+      <div class="form-group switch-group">
+        <span class="switch-label">Modo Mantenimiento Automático</span>
+        <label class="switch">
+          <input type="checkbox" id="maintSwitch">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <p class="form-message" id="formMessage" role="alert" aria-live="assertive"></p>
+
+      <div class="drawer-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeDrawer()">Cancelar</button>
+        <button type="submit" class="btn btn-primary" id="saveBtn">Guardar Cambios</button>
+      </div>
+    </form>
+  </aside>
+
+  <!-- Ventana Modal (Confirmación Destructiva) -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalTitle">
+    <div class="modal-header">
+      <span class="modal-icon" aria-hidden="true">⚠️</span>
+      <h2 id="modalTitle">Confirmar Acción Crítica</h2>
+    </div>
+    <div class="modal-body">
+      <p>¿Estás seguro de que deseas reiniciar la instancia <strong id="modalServerName">--</strong>?</p>
+      <p class="text-danger"><small>Esta acción interrumpirá el tráfico de red y los servicios asociados de forma temporal.</small></p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn btn-danger" id="confirmActionBtn" onclick="executeCriticalAction()">Sí, Reiniciar Instancia</button>
+    </div>
+  </div>
+
+  <script src="Estilo.js"></script>
+</body>
+</html>
