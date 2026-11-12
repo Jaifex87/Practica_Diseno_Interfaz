@@ -263,6 +263,10 @@ body {
   min-width: 0;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 /* Layout Bento Grid (Mobile-First: 1 sola columna en móvil) */
 .bento-grid {
   display: grid;

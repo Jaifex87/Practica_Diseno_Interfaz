@@ -214,11 +214,35 @@ document.addEventListener('keydown', event => {
 });
 
 const navItems = document.querySelectorAll('.sidebar-nav .nav-item');
+const metricsSection = document.getElementById('metricas');
+const serversSection = document.getElementById('servidores');
+const dashboardViews = ['#dashboard', '#servidores', '#metricas'];
+
+function showDashboardView(view) {
+  metricsSection.hidden = view === '#servidores';
+  serversSection.hidden = view === '#metricas';
+}
+
+const initialView = dashboardViews.includes(window.location.hash) ? window.location.hash : '#dashboard';
+showDashboardView(initialView);
+navItems.forEach(item => {
+  if (item.hash === initialView) {
+    navItems.forEach(navItem => {
+      navItem.classList.remove('active');
+      navItem.removeAttribute('aria-current');
+    });
+    item.classList.add('active');
+    item.setAttribute('aria-current', 'page');
+  }
+});
+
 navItems.forEach(item => {
   item.addEventListener('click', event => {
     const opensConfiguration = item.hash === '#configuracion';
     if (opensConfiguration) {
       event.preventDefault();
+    } else {
+      showDashboardView(item.hash);
     }
 
     navItems.forEach(navItem => {
